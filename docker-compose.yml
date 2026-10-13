@@ -1,0 +1,11 @@
+services:
+  server:
+    build: .
+    command: sh -c "python server.py & exec python quic_server.py"
+    cap_add: [NET_ADMIN]   # needed for tc netem and for setting non-default congestion control
+  client:
+    build: .
+    depends_on: [server]
+    profiles: [client]
+    volumes:
+      - ./results:/app/results
